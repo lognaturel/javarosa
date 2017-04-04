@@ -15,11 +15,7 @@ public class Logger {
 	public static void registerLogger(ILogger theLogger) {
 		logger = theLogger;
 	}
-	
-	public static ILogger _ () {
-		return logger;
-	}
-	
+
 	/**
 	 * Posts the given data to an existing Incident Log, if one has
 	 * been registered and if logging is enabled on the device. 
