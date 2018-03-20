@@ -6,7 +6,9 @@ import org.javarosa.core.model.instance.DataInstance;
 import org.javarosa.core.model.instance.TreeReference;
 import org.javarosa.xpath.expr.XPathPathExpr;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Represents a set of XPath nodes returned from a path or other operation which acts on multiple
@@ -185,5 +187,36 @@ public class XPathNodeset {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * Builds and returns a copy of this XPathNodeset with nodes in a randomized order.
+     *
+     * @param seed  the seed used when building a Random object to get reproducible results. If null, no seed is used
+     * @return      a copy of this nodeset with nodes in a randomized order
+     */
+    public XPathNodeset getShuffledCopy(Double seed) {
+        List<TreeReference> nodesCopy = new ArrayList<>();
+        for (TreeReference node : nodes) {
+            nodesCopy.add(node);
+        }
+
+        XPathNodeset result = new XPathNodeset(nodesCopy, instance, ec);
+        Random r;
+        if (seed != null) {
+            r = new Random(seed.longValue());
+        } else {
+            r = new Random();
+        }
+
+        for (int i = result.nodes.size() - 1; i > 0; i--) {
+            int randomIndex = r.nextInt(i + 1);
+
+            TreeReference current = result.nodes.remove(i);
+            result.nodes.add(i, result.nodes.get(randomIndex));
+            result.nodes.set(randomIndex, current);
+        }
+
+        return result;
     }
 }

@@ -463,9 +463,18 @@ public class XPathFuncExpr extends XPathExpression {
             return GeoUtils.calculateAreaOfGPSPolygonOnEarthInSquareMeters(gpsCoordinatesList);
         } else if (name.equals("digest") && (args.length == 2 || args.length == 3)) {
             return DigestAlgorithm.from((String) argVals[1]).digest(
-                (String) argVals[0],
-                args.length == 3 ? Encoding.from((String)argVals[2]) : Encoding.BASE64
+                    (String) argVals[0],
+                    args.length == 3 ? Encoding.from((String) argVals[2]) : Encoding.BASE64
             );
+        } else if (name.equals("randomize")) {
+            if (args.length == 1) {
+                return randomize(argVals[0], null);
+            } else if (args.length == 2) {
+                return randomize(argVals[0], argVals[1]);
+            } else {
+                throw new XPathUnhandledException("function \'randomize\' requires 1 or 2 arguments. " + args.length +
+                        " provided.");
+            }
         } else {
             //check for custom handler
             IFunctionHandler handler = funcHandlers.get(name);
@@ -1245,6 +1254,29 @@ public class XPathFuncExpr extends XPathExpression {
         String re = toString(o2);
 
         return Pattern.matches(re, str);
+    }
+
+    /**
+     * Returns a copy of the specified nodeset with nodes in a randomized order.
+     *
+     * @param o1    the nodeset to randomize
+     * @param o2    the seed for the Random object. Can be null if no seed is wanted
+     * @return      the randomized nodeset
+     */
+    static Object randomize(Object o1, Object o2) {
+        XPathNodeset nodeset;
+        if (o1 instanceof XPathNodeset) {
+            nodeset = (XPathNodeset) o1;
+        } else {
+            throw new XPathTypeMismatchException("First argument to randomize must be a nodeset");
+        }
+
+        Double seed = null;
+        if (o2 != null) {
+            seed = toNumeric(o2);
+        }
+
+        return nodeset.getShuffledCopy(seed);
     }
 
     private static Object[] subsetArgList (Object[] args, int start) {
