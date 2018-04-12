@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import org.javarosa.core.model.condition.IConditionExpr;
 import org.javarosa.core.model.instance.FormInstance;
@@ -38,6 +39,9 @@ public class ItemsetBinding implements Externalizable, Localizable {
        //note: this is only here because its currently impossible to both (a) get a form control's parent, and (b)
        //convert expressions into refs while preserving predicates. once these are fixed, this field can go away
 
+    public boolean randomize;
+    public Long seed;
+
     public TreeReference labelRef;     //absolute ref of label
     public IConditionExpr labelExpr;   //path expression for label; may be relative, no predicates
     public boolean labelIsItext;       //if true, content of 'label' is an itext id
@@ -61,19 +65,37 @@ public class ItemsetBinding implements Externalizable, Localizable {
             logger.warn("previous choices not cleared out");
             clearChoices();
         }
+
         this.choices = choices;
 
-        //init localization
-        if (localizer != null) {
-            String curLocale = localizer.getLocale();
-            if (curLocale != null) {
-                localeChanged(curLocale, localizer);
-            }
+        if (randomize) {
+            randomizeChoices();
         }
     }
 
     public void clearChoices () {
         this.choices = null;
+    }
+
+    private void randomizeChoices() {
+        Random r = new Random();
+
+        if (seed != null) {
+            r.setSeed(seed);
+        }
+
+        for (int i = choices.size() - 1; i > 0; i--) {
+            int randomIndex = r.nextInt(i + 1);
+
+            SelectChoice current = choices.get(i);
+            choices.set(i, choices.get(randomIndex));
+            choices.set(randomIndex, current);
+        }
+
+        // Match indices to new positions
+        for (int i = 0; i < choices.size(); i++) {
+            choices.get(i).setIndex(i);
+        }
     }
 
     public void localeChanged(String locale, Localizer localizer) {

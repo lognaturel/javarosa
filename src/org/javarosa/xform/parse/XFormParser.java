@@ -1273,6 +1273,24 @@ public class XFormParser implements IXFormParserFunctions {
          */
         String nodesetStr = e.getAttributeValue("", NODESET_ATTR);
         if(nodesetStr == null ) throw new RuntimeException("No nodeset attribute in element: ["+e.getName()+"]. This is required. (Element Printout:"+XFormSerializer.elementToString(e)+")");
+
+        if (nodesetStr.startsWith("randomize(")) {
+            itemset.randomize = true;
+            nodesetStr = nodesetStr.substring("randomize(".length());
+            nodesetStr = nodesetStr.substring(0, nodesetStr.length() - 1);
+
+            String[] args = nodesetStr.split(",");
+            if (args.length > 1) {
+                try {
+                    itemset.seed = Long.parseLong(args[args.length - 1]);
+                } catch (NumberFormatException nfe) {
+                    itemset.seed = null;
+                }
+
+                nodesetStr = nodesetStr.substring(0, nodesetStr.lastIndexOf(','));
+            }
+        }
+
         XPathPathExpr path = XPathReference.getPathExpr(nodesetStr);
         itemset.nodesetExpr = new XPathConditional(path);
         itemset.contextRef = getFormElementRef(qparent);
