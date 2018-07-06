@@ -85,4 +85,12 @@ public class XPathPathExprCurrentTest {
         SelectOneData variety = (SelectOneData) formDef.getFirstDescendantWithName("variety").getValue();
         assertEquals("collins", variety.getDisplayText());
     }
+
+    @Test
+    public void current_in_itemset_nodeset_should_fail() {
+        FormParseInit fpi = new FormParseInit(r("relative-current-ref-repeat.xml"));
+        FormDef formDef = fpi.getFormDef();
+        FormEntryModel formEntryModel = new FormEntryModel(formDef);
+        FormEntryController formEntryController = new FormEntryController(formEntryModel);
+    }
 }
