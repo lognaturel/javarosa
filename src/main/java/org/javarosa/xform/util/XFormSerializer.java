@@ -17,8 +17,8 @@
 package org.javarosa.xform.util;
 
 import org.kxml2.io.KXmlSerializer;
-import org.kxml2.kdom.Document;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Document;
+import org.javarosa.kdom.Element;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

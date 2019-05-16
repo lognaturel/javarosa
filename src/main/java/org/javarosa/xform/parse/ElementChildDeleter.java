@@ -1,6 +1,6 @@
 package org.javarosa.xform.parse;
 
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 import java.util.Collection;
 

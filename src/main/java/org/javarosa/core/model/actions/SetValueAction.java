@@ -25,7 +25,7 @@ import org.javarosa.xform.parse.XFormParser;
 import org.javarosa.xpath.XPathTypeMismatchException;
 import org.javarosa.xpath.expr.XPathExpression;
 import org.javarosa.xpath.expr.XPathFuncExpr;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 /**
  * @author ctsims

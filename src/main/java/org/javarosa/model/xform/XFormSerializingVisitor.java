@@ -34,9 +34,9 @@ import org.javarosa.core.services.transport.payload.IDataPayload;
 import org.javarosa.core.services.transport.payload.MultiMessagePayload;
 import org.javarosa.xform.util.XFormAnswerDataSerializer;
 import org.javarosa.xform.util.XFormSerializer;
-import org.kxml2.kdom.Document;
-import org.kxml2.kdom.Element;
-import org.kxml2.kdom.Node;
+import org.javarosa.kdom.Document;
+import org.javarosa.kdom.Element;
+import org.javarosa.kdom.Node;
 
 /**
  * A visitor-esque class which walks a FormInstance and constructs an XML document

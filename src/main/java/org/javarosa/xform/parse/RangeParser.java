@@ -1,7 +1,7 @@
 package org.javarosa.xform.parse;
 
 import org.javarosa.core.model.RangeQuestion;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

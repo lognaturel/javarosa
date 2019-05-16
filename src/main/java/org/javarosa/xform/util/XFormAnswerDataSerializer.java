@@ -41,7 +41,7 @@ import org.javarosa.core.model.data.TimeData;
 import org.javarosa.core.model.data.UncastData;
 import org.javarosa.core.model.data.helper.Selection;
 import org.javarosa.core.model.utils.DateUtils;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 /**
  * The XFormAnswerDataSerializer takes in AnswerData objects, and provides

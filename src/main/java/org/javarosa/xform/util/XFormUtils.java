@@ -31,7 +31,7 @@ import org.javarosa.xform.parse.IXFormParserFactory;
 import org.javarosa.xform.parse.XFormParseException;
 import org.javarosa.xform.parse.XFormParser;
 import org.javarosa.xform.parse.XFormParserFactory;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

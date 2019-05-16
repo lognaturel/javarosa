@@ -16,7 +16,7 @@ import org.javarosa.core.model.instance.InvalidReferenceException;
 import org.javarosa.core.model.instance.TreeElement;
 import org.javarosa.core.model.instance.TreeReference;
 import org.javarosa.xform.util.XFormUtils;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 import java.util.ArrayList;
 import java.util.Arrays;

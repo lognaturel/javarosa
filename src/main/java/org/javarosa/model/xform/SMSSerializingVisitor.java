@@ -30,8 +30,8 @@ import org.javarosa.core.model.utils.IInstanceSerializingVisitor;
 import org.javarosa.core.services.transport.payload.ByteArrayPayload;
 import org.javarosa.core.services.transport.payload.IDataPayload;
 import org.javarosa.xform.util.XFormAnswerDataSerializer;
-import org.kxml2.kdom.Element;
-import org.kxml2.kdom.Node;
+import org.javarosa.kdom.Element;
+import org.javarosa.kdom.Node;
 
 /**
  * A modified version of Clayton's XFormSerializingVisitor that constructs

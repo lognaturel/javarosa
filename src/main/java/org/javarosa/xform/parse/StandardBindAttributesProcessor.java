@@ -10,7 +10,7 @@ import org.javarosa.model.xform.XPathReference;
 import org.javarosa.xpath.XPathConditional;
 import org.javarosa.xpath.XPathException;
 import org.javarosa.xpath.parser.XPathSyntaxException;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 import java.util.Collection;
 import java.util.Map;

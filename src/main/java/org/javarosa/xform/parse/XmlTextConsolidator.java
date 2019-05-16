@@ -1,14 +1,14 @@
 package org.javarosa.xform.parse;
 
 import org.javarosa.core.util.CacheTable;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import static org.kxml2.kdom.Node.ELEMENT;
-import static org.kxml2.kdom.Node.TEXT;
+import static org.javarosa.kdom.Node.ELEMENT;
+import static org.javarosa.kdom.Node.TEXT;
 
 class XmlTextConsolidator {
 

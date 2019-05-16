@@ -4,7 +4,7 @@ import org.javarosa.core.model.IDataReference;
 import org.javarosa.core.model.SubmissionProfile;
 import org.javarosa.core.model.test.DummyReference;
 import org.junit.Test;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

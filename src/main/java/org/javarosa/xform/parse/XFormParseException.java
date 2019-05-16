@@ -16,7 +16,7 @@
 
 package org.javarosa.xform.parse;
 
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 /**
  * Exception thrown when an XForms Parsing error occurs.

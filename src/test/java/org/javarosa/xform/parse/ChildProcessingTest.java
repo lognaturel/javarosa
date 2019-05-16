@@ -1,13 +1,13 @@
 package org.javarosa.xform.parse;
 
 import org.junit.Test;
-import org.kxml2.kdom.Element;
+import org.javarosa.kdom.Element;
 
 import static org.javarosa.xform.parse.XFormParser.NAMESPACE_JAVAROSA;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.kxml2.kdom.Node.COMMENT;
-import static org.kxml2.kdom.Node.ELEMENT;
+import static org.javarosa.kdom.Node.COMMENT;
+import static org.javarosa.kdom.Node.ELEMENT;
 
 public class ChildProcessingTest {
     @Test public void worksWithOneChild() {
