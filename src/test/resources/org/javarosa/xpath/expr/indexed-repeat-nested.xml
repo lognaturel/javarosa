@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa">
+    <h:head>
+        <h:title>data</h:title>
+        <model>
+            <instance>
+                <data id="indexed-repeat-nested">
+                    <my-repeat>
+                        <uuid/>
+                        <my-nested-repeat>
+                            <parent/>
+                            <indexed-repeat-parent/>
+                        </my-nested-repeat>
+                    </my-repeat>
+                    <meta>
+                        <instanceID/>
+                    </meta>
+                </data>
+            </instance>
+            <bind calculate="uuid()" nodeset="/data/my-repeat/uuid" type="string"/>
+            <bind calculate="../../uuid" nodeset="/data/my-repeat/my-nested-repeat/parent" type="string"/>
+            <bind calculate="indexed-repeat( ../../uuid ,  /data/my-repeat , position(../..))" nodeset="/data/my-repeat/my-nested-repeat/indexed-repeat-parent" type="string"/>
+            <bind jr:preload="uid" nodeset="/data/meta/instanceID" readonly="true()" type="string"/>
+        </model>
+    </h:head>
+    <h:body>
+        <group ref="/data/my-repeat">
+            <label/>
+            <repeat nodeset="/data/my-repeat">
+                <group ref="/data/my-repeat/my-nested-repeat">
+                    <label/>
+                    <repeat nodeset="/data/my-repeat/my-nested-repeat">
+                        <input ref="/data/my-repeat/my-nested-repeat/parent">
+                            <label>Parent</label>
+                        </input>
+                        <input ref="/data/my-repeat/my-nested-repeat/indexed-repeat-parent">
+                            <label>Indexed-repeat parent</label>
+                        </input>
+                    </repeat>
+                </group>
+            </repeat>
+        </group>
+    </h:body>
+</h:html>
