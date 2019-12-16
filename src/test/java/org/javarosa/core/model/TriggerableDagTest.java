@@ -37,14 +37,19 @@ import org.javarosa.debug.Event;
 import org.joda.time.LocalTime;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Safe2014DagImplTest {
-    private static Logger logger = LoggerFactory.getLogger(Safe2014DagImplTest.class);
+public class TriggerableDagTest {
+    private static Logger logger = LoggerFactory.getLogger(TriggerableDagTest.class);
 
     private List<Event> dagEvents = new ArrayList<>();
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -487,6 +492,25 @@ public class Safe2014DagImplTest {
         assertThat(scenario.answerOf("/data/result_2"), is(intAnswer(30)));
     }
 
+
+    @Test
+    public void formWithCycle_cantBeBuilt() throws IOException {
+        exceptionRule.expect(RuntimeException.class);
+        exceptionRule.expectMessage("Dependency cycles amongst the xpath expressions in relevant/calculate");
+
+        Scenario.init("Some form", html(
+            head(
+                title("Some form"),
+                model(
+                    mainInstance(t("data id=\"some-form\"",
+                        t("count", "1")
+                    )),
+                    bind("/data/count").type("int").calculate(". + 1")
+                )
+            )
+        ));
+    }
+
     private void assertDagEvents(List<Event> dagEvents, String... lines) {
         assertThat(dagEvents.stream().map(Event::getDisplayMessage).collect(joining("\n")), is(join("\n", lines)));
     }
@@ -530,6 +554,5 @@ public class Safe2014DagImplTest {
         LocalTime duration = LocalTime.fromMillisOfDay((System.nanoTime() - start) / 1_000_000);
         logger.info("Deletion of {} repeats took {}", numberOfRepeats, duration.toString());
     }
-
 
 }
