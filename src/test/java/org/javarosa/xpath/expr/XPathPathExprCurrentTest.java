@@ -19,8 +19,20 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.javarosa.core.test.AnswerDataMatchers.answer;
 import static org.javarosa.core.test.SelectChoiceMatchers.choice;
+import static org.javarosa.core.util.BindBuilderXFormsElement.bind;
+import static org.javarosa.core.util.XFormsElement.body;
+import static org.javarosa.core.util.XFormsElement.head;
+import static org.javarosa.core.util.XFormsElement.html;
+import static org.javarosa.core.util.XFormsElement.instance;
+import static org.javarosa.core.util.XFormsElement.item;
+import static org.javarosa.core.util.XFormsElement.mainInstance;
+import static org.javarosa.core.util.XFormsElement.model;
+import static org.javarosa.core.util.XFormsElement.repeat;
+import static org.javarosa.core.util.XFormsElement.select1;
+import static org.javarosa.core.util.XFormsElement.t;
 import static org.junit.Assert.assertThat;
 
+import java.io.IOException;
 import java.util.List;
 import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.test.Scenario;
@@ -74,6 +86,33 @@ public class XPathPathExprCurrentTest {
             choice("collins"),
             choice("duke")
         ));
+    }
+
+    @Test
+    public void currentWithoutAChild() throws IOException {
+        Scenario scenario = Scenario.init("current-no-child", html(
+            head(
+                model(
+                    mainInstance("current-no-child",
+                        t("my-repeat",
+                            t("my-select", "item2")
+                        )
+                    ),
+                    instance("options",
+                        item("item1", "Item1"),
+                        item("item2", "Item2"),
+                        item("item3", "Item3")
+                    ),
+                    bind("/data/my-repeat/my-select").type("string")
+            )),
+            body(
+                repeat("/data/my-repeat",
+                    select1("/data/my-repeat/my-select", "options", "selected(current(),value)")
+                )
+            )));
+
+        assertThat(scenario.choicesOf("/data/my-repeat/my-select").size(), is(1));
+        assertThat(scenario.choicesOf("/data/my-repeat/my-select").get(0).getValue(), is("item2"));
     }
 
 }

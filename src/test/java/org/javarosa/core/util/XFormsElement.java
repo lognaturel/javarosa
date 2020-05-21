@@ -91,6 +91,13 @@ public interface XFormsElement {
         return t("instance", children);
     }
 
+    static XFormsElement mainInstance(String formId, XFormsElement... children) {
+        return t("instance", t("data id=\"" + formId + "\"", children));
+    }
+
+    static XFormsElement instance(String name, XFormsElement... children) {
+        return t("instance id=" + "\"" + name + "\"", t("root", children));
+    }
 
     static XFormsElement input(String ref, XFormsElement... children) {
         return t("input ref=\"" + ref + "\"", children);
@@ -98,6 +105,13 @@ public interface XFormsElement {
 
     static XFormsElement select1(String ref, XFormsElement... children) {
         return t("select1 ref=\"" + ref + "\"", children);
+    }
+
+    static XFormsElement select1(String ref, String instance, String filter) {
+        return t("select1 ref=\"" + ref + "\"",
+            t("itemset nodeset=\"instance('" + instance + "')/root/item[" + filter + "]\"",
+                t("value ref=\"value\""),
+                t("label ref=\"label\"")));
     }
 
     static XFormsElement group(String ref, XFormsElement... children) {
