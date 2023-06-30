@@ -1,9 +1,5 @@
 package org.javarosa.core.model.test;
 
-import org.javarosa.core.test.Scenario;
-import org.javarosa.measure.Measure;
-import org.junit.Test;
-
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -23,6 +19,10 @@ import static org.javarosa.core.util.XFormsElement.model;
 import static org.javarosa.core.util.XFormsElement.repeat;
 import static org.javarosa.core.util.XFormsElement.t;
 import static org.javarosa.core.util.XFormsElement.title;
+
+import org.javarosa.core.test.Scenario;
+import org.javarosa.measure.Measure;
+import org.junit.Test;
 
 public class PredicateCachingTest {
 
@@ -372,11 +372,16 @@ public class PredicateCachingTest {
                     )),
                     instance("instance",
                         t("item",
-                            t("value", "A")
+                            t("value1", "0"),
+                            t("value2", "1")
+                        ),
+                        t("item",
+                            t("value1", "A"),
+                            t("value2", "A")
                         )
                     ),
                     bind("/data/calc").type("string")
-                        .calculate("instance('instance')/root/item[value = value]/value"),
+                        .calculate("instance('instance')/root/item[value1 = value2]/value1"),
                     bind("/data/input").type("string")
                 )
             ),
@@ -387,7 +392,7 @@ public class PredicateCachingTest {
     }
 
     @Test
-    public void nestedPredicatesDoNotGetConfused() throws Exception {
+    public void multiplePredicatesAtSameLevelDoNotGetConfused() throws Exception {
         Scenario scenario = Scenario.init("Some form", html(
             head(
                 title("Some form"),
@@ -434,6 +439,69 @@ public class PredicateCachingTest {
 
         assertThat(scenario.answerOf("/data/calc").getValue(), equalTo("A3"));
         assertThat(scenario.answerOf("/data/calc2"), equalTo(null));
+    }
+
+    @Test
+    public void multiplePredicatesAtDifferentLevelsDoNotGetConfused() throws Exception {
+        Scenario scenario = Scenario.init("Some form", html(
+            head(
+                title("Some form"),
+                model(
+                    mainInstance(t("data id=\"some-form\"",
+                        t("calc"),
+                        t("calc2"),
+                        t("calc3"),
+                        t("input1"),
+                        t("input2")
+                    )),
+                    instance("instance",
+                        t("item",
+                            t("value",
+                                t("prop1", "a"),
+                                t("prop2", "b")
+                            ),
+                            t("count", "2"),
+                            t("id", "A2")
+                        ),
+                        t("item",
+                            t("value",
+                                t("prop1", "x"),
+                                t("prop2", "y")
+                            ),
+                            t("count", "3"),
+                            t("id", "A3")
+                        ),
+                        t("item",
+                            t("value",
+                                t("prop1", "d"),
+                                t("prop2", "c")
+                            ),
+                            t("count", "2"),
+                            t("id", "B2")
+                        )
+                    ),
+                    bind("/data/calc").type("string")
+                        .calculate("instance('instance')/root/item[count = /data/input1]/value[prop1 = 'a']/prop2"),
+                    bind("/data/calc2").type("string")
+                        .calculate("instance('instance')/root/item[count = /data/input2]/value[prop1 = 'a']/prop2"),
+                    bind("/data/calc3").type("string")
+                        .calculate("instance('instance')/root/item[count = /data/input1]/value[prop1 = 'd']/prop2"),
+                    bind("/data/input1").type("string"),
+                    bind("/data/input2").type("string")
+                )
+            ),
+            body(
+                input("/data/input1"),
+                input("/data/input2")
+            )
+        ));
+
+        scenario.answer("/data/input1", "2");
+        scenario.answer("/data/input2", "3");
+
+        assertThat(scenario.answerOf("/data/calc").getValue(), equalTo("b"));
+        assertThat(scenario.answerOf("/data/calc2"), equalTo(null));
+        assertThat(scenario.answerOf("/data/calc3").getValue(), equalTo("c"));
     }
 
     @Test
