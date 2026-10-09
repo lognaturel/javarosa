@@ -886,10 +886,8 @@ public class XPathFuncExpr extends XPathExpression {
                     throw new XPathTypeMismatchException("The value \"" + n + "\" is out of range for representing a date.");
                 }
 
-                long timeMillis = (long) (n * DateUtils.DAY_IN_MS);
-
-                Date d = new Date(timeMillis);
-                return d;
+                long epochMillis = DateUtils.getDate(1970, 1, 1).getTime();
+                return new Date(epochMillis + Math.round(n * DateUtils.DAY_IN_MS));
             } else {
                 Double n = toInt(input);
 
